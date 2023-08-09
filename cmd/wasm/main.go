@@ -11,7 +11,7 @@ import (
 
 func wasmWrapper() js.Func {
 	return js.FuncOf(func(this js.Value, args []js.Value) any {
-		if len(args) != 2 {
+		if len(args) < 2 {
 			return "invalid arguments"
 		}
 
@@ -19,13 +19,18 @@ func wasmWrapper() js.Func {
 		js.CopyBytesToGo(b, args[0])
 
 		kgroups := args[1].Int()
+		tolerance := 0.9
+
+		if len(args) == 3 {
+			tolerance = args[2].Float()
+		}
 
 		rgba, _, err := utils.DecodeImageFromBytes(b)
 		if err != nil {
 			fmt.Println(err)
 		}
 
-		colors, err := kmeans.GetDominantColorsHex(rgba, kgroups)
+		colors, err := kmeans.GetDominantColorsHex(rgba, kgroups, tolerance)
 		if err != nil {
 			fmt.Println(err)
 		}

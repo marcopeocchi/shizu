@@ -4,5 +4,5 @@ type GoRuntime = {
   importObject: WebAssembly.Imports
 }
 
-declare const getDominantColors: (buffer: Uint8Array, kgroups: number) => string
+declare const getDominantColors: (buffer: Uint8Array, kgroups: number, tolerance?: number) => string
 declare const Go: GoRuntime

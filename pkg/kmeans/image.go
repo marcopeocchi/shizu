@@ -10,15 +10,21 @@ import (
 	"github.com/muesli/kmeans"
 )
 
-func GetDominantColorsHex(rgba image.Image, kgroups int) (*[]string, error) {
+func GetDominantColorsHex(rgba image.Image, kgroups int, tolerance float64) (*[]string, error) {
 	if kgroups < 3 {
 		return nil, errors.New("kgroups can't be less than 3")
 	}
 
+	boundsX := float64(rgba.Bounds().Max.Y)
+	boundsY := float64(rgba.Bounds().Max.Y)
+
+	iterationsX := int((boundsX * (tolerance * 100)) / boundsX)
+	iterationsY := int((boundsY * (tolerance * 100)) / boundsY)
+
 	var ob clusters.Observations
 
-	for y := rgba.Bounds().Min.Y; y < rgba.Bounds().Max.Y; y += 10 {
-		for x := rgba.Bounds().Min.X; x < rgba.Bounds().Max.X; x += 10 {
+	for y := rgba.Bounds().Min.Y; y < rgba.Bounds().Max.Y; y += iterationsX {
+		for x := rgba.Bounds().Min.X; x < rgba.Bounds().Max.X; x += iterationsY {
 			c := rgba.At(x, y)
 			r, g, b, _ := c.RGBA()
 			ob = append(ob, clusters.Coordinates{
