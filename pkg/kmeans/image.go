@@ -23,8 +23,8 @@ func GetDominantColorsHex(rgba image.Image, kgroups int, tolerance float64) (*[]
 
 	var ob clusters.Observations
 
-	for y := rgba.Bounds().Min.Y; y < rgba.Bounds().Max.Y; y += iterationsX {
-		for x := rgba.Bounds().Min.X; x < rgba.Bounds().Max.X; x += iterationsY {
+	for y := rgba.Bounds().Min.Y; y < rgba.Bounds().Max.Y; y += iterationsY {
+		for x := rgba.Bounds().Min.X; x < rgba.Bounds().Max.X; x += iterationsX {
 			c := rgba.At(x, y)
 			r, g, b, _ := c.RGBA()
 			ob = append(ob, clusters.Coordinates{
