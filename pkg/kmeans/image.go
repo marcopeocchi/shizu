@@ -15,11 +15,11 @@ func GetDominantColorsHex(rgba image.Image, kgroups int, tolerance float64) (*[]
 		return nil, errors.New("kgroups can't be less than 3")
 	}
 
-	boundsX := float64(rgba.Bounds().Max.Y)
 	boundsY := float64(rgba.Bounds().Max.Y)
+	boundsX := float64(rgba.Bounds().Max.X)
 
-	iterationsX := int((boundsX * (tolerance * 100)) / boundsX)
 	iterationsY := int((boundsY * (tolerance * 100)) / boundsY)
+	iterationsX := int((boundsX * (tolerance * 100)) / boundsX)
 
 	var ob clusters.Observations
 
