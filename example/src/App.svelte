@@ -1,23 +1,33 @@
 <script lang="ts">
-  import testImage from '/test.jpeg';
+  import testImage1 from '/test.jpg';
+  import testImage2 from '/r34.jpg';
+  import testImage3 from '/r34-2.jpg';
   import Palette from './lib/Palette.svelte';
   import { getPalette } from './lib/shizu';
 
-  const palette = getPalette(testImage, 5);
+  let index = 0;
+  let groups = 5;
+  let images = [testImage1, testImage2, testImage3];
 </script>
 
 <main>
   <div>
-    {#await palette}
+    {#await getPalette(images[index], groups)}
       <p>Generating palette...</p>
     {:then colors}
       <Palette {colors} />
     {/await}
-    <img src={testImage} height="750" alt="" />
+    <img src={images[index]} height="750" alt="" />
   </div>
-  <a href="https://unsplash.com/it/foto/SUUvsLyEZjo">
-    Photo by Pablo Arenas from unsplash.com
-  </a>
+  <div class="bottom">
+    <select bind:value={index}>
+      <option value={0}>Photo 1</option>
+      <option value={1}>Photo 2</option>
+      <option value={2}>Photo 3</option>
+    </select>
+    <input type="range" min="3" max="12" step="1" bind:value={groups} />
+    <div>Palette size: {groups}</div>
+  </div>
 </main>
 
 <style scoped>
@@ -29,11 +39,11 @@
     justify-content: center;
     align-items: center;
   }
-  a {
-    color: #cecece;
-    text-decoration: none;
-    margin-top: 20px;
+  .bottom {
+    gap: 10px;
+    margin-top: 15px;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
   }

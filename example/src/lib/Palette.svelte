@@ -4,7 +4,11 @@
 
 <div class="container">
   {#each colors as color}
-    <div class="tile" style="background-color: {color};" />
+    <div
+      class="tile"
+      style:height="{750 / colors.length}px"
+      style:background-color={color}
+    />
   {/each}
 </div>
 
@@ -16,6 +20,5 @@
 
   .tile {
     width: 150px;
-    height: 150px;
   }
 </style>
