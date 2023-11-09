@@ -4,6 +4,7 @@ WASM library for generating palettes from images using KMeans algorithm.
 
 **🚧 Still WIP 🚧**
 
-![image](https://github.com/marcopeocchi/shizu/assets/35533749/4d7977f8-0487-4941-9a50-31a347a40b9b)
+![Screenshot_20231109_165414](https://github.com/marcopeocchi/shizu/assets/35533749/4a0a357b-b4ca-49e4-9d9d-90bf91a04415)
+
 
 
