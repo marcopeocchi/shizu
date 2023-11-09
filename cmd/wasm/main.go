@@ -2,33 +2,35 @@ package main
 
 import (
 	"fmt"
+	"image"
 	"strings"
 	"syscall/js"
 
 	"github.com/marcopeocchi/shizu/pkg/kmeans"
-	"github.com/marcopeocchi/shizu/pkg/utils"
 )
 
 func wasmWrapper() js.Func {
 	return js.FuncOf(func(this js.Value, args []js.Value) any {
-		if len(args) < 2 {
+		if len(args) < 1 {
 			return "invalid arguments"
 		}
 
-		b := make([]byte, args[0].Get("byteLength").Int())
-		js.CopyBytesToGo(b, args[0])
+		var (
+			canvas    = make([]byte, args[0].Get("buffer").Get("byteLength").Int())
+			kgroups   = args[0].Get("paletteSize").Int()
+			width     = args[0].Get("width").Int()
+			height    = args[0].Get("height").Int()
+			tolerance = args[0].Get("tolerance").Float()
+		)
 
-		kgroups := args[1].Int()
-		tolerance := 0.9
+		js.CopyBytesToGo(canvas, args[0].Get("buffer"))
 
 		if len(args) == 3 {
 			tolerance = args[2].Float()
 		}
 
-		rgba, _, err := utils.DecodeImageFromBytes(b)
-		if err != nil {
-			fmt.Println(err)
-		}
+		rgba := image.NewRGBA(image.Rect(0, 0, width, height))
+		rgba.Pix = canvas
 
 		colors, err := kmeans.GetDominantColorsHex(rgba, kgroups, tolerance)
 		if err != nil {

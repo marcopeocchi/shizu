@@ -4,5 +4,13 @@ type GoRuntime = {
   importObject: WebAssembly.Imports
 }
 
-declare const getDominantColors: (buffer: Uint8Array, kgroups: number, tolerance?: number) => string
+type ShizuParams = {
+  buffer: Uint8Array
+  paletteSize: number
+  tolerance: number
+  width: number,
+  height: number,
+}
+
+declare const getDominantColors: (params: ShizuParams) => string
 declare const Go: GoRuntime
