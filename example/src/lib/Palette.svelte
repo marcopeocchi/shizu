@@ -2,22 +2,21 @@
   export let colors: string[];
 </script>
 
-<div class="container">
-  {#each colors as color}
+<div class="rounded-lg shadow p-8 bg-neutral-900">
+  {#each colors as color, index}
     <div
-      class="tile"
-      style:height="{750 / colors.length}px"
+      class={index === 0
+        ? 'rounded-t-lg tile'
+        : index === colors.length - 1
+        ? 'rounded-b-lg tile'
+        : 'tile'}
+      style:height="{550 / colors.length}px"
       style:background-color={color}
     />
   {/each}
 </div>
 
 <style scoped>
-  .container {
-    display: flex;
-    flex-direction: column;
-  }
-
   .tile {
     width: 150px;
   }
