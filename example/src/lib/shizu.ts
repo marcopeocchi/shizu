@@ -1,5 +1,6 @@
-export const getPalette = async (src: string, nColors: number) => {
+export const getPalette = async (src: string, nColors: number, tolerance: number) => {
   const img = new Image()
+  img.crossOrigin = 'Anonymous'
   img.src = src
 
   const canvas = new OffscreenCanvas(img.width, img.height)
@@ -17,7 +18,7 @@ export const getPalette = async (src: string, nColors: number) => {
     height: img.height,
     width: img.width,
     paletteSize: nColors,
-    tolerance: 0.85
+    tolerance: tolerance
   })
     .split(",")
 }
