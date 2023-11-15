@@ -1,6 +1,10 @@
-export const getPalette = async (src: string, nColors: number, tolerance: number) => {
+import { get } from 'svelte/store'
+import { groupsStore, loadingStore, paletteStore, toleranceStore } from '../store'
+
+export const getPalette = async (src: string) => {
+  loadingStore.set(true)
+
   const img = new Image()
-  img.crossOrigin = 'Anonymous'
   img.src = src
 
   const canvas = new OffscreenCanvas(img.width, img.height)
@@ -13,12 +17,26 @@ export const getPalette = async (src: string, nColors: number, tolerance: number
     .data
     .buffer
 
-  return getDominantColors({
+  const palette = getDominantColors({
     buffer: new Uint8Array(buffer),
     height: img.height,
     width: img.width,
-    paletteSize: nColors,
-    tolerance: tolerance
+    paletteSize: get(groupsStore),
+    tolerance: get(toleranceStore)
   })
     .split(",")
+
+  loadingStore.set(false)
+  paletteStore.set(palette)
 }
+
+export const getDataUrlFromFile = async (file: File) =>
+  new Promise<string>(resolve => {
+    const reader = new FileReader()
+    reader.onload = () => {
+      resolve(reader.result as string)
+      return
+    }
+
+    reader.readAsDataURL(file)
+  })

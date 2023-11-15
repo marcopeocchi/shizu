@@ -1,54 +1,52 @@
 <script lang="ts">
-  import testImage0 from '/gopher.webp';
+  import { get } from 'svelte/store';
+  import FileUpload from './lib/FileUpload.svelte';
+  import FullScreenLoader from './lib/FullScreenLoader.svelte';
   import Palette from './lib/Palette.svelte';
+  import PaletteSizeSlider from './lib/PaletteSizeSlider.svelte';
+  import Placeholder from './lib/Placeholder.svelte';
+  import ToleranceSlider from './lib/ToleranceSlider.svelte';
   import { getPalette } from './lib/shizu';
+  import { dataUrlStore, loadingStore, paletteStore } from './store';
+  import testImage0 from '/gopher.webp';
+  import { onMount } from 'svelte';
 
-  let groups = 5;
-  let tolerance = 0.9;
-  let image = testImage0;
+  let loading = false;
+
+  dataUrlStore.subscribe((url) => {
+    getPalette(url);
+  });
+
+  const generate = async () => {
+    loading = true;
+    await getPalette(get(dataUrlStore));
+    loading = false;
+  };
+
+  onMount(() => {
+    dataUrlStore.set(testImage0);
+    generate();
+  });
 </script>
 
 <main class="min-h-screen bg-neutral-950 text-neutral-50">
   <div class="flex gap-2 items-center justify-center">
-    {#await getPalette(image, groups, tolerance)}
-      <p>Generating palette...</p>
-    {:then colors}
-      <Palette {colors} />
-    {/await}
-    <img class="rounded-lg h-[82.5vh] m-8" src={image} alt="" />
+    {#if loading}
+      <Placeholder />
+    {:else if $loadingStore}
+      <FullScreenLoader />
+    {:else}
+      <Palette colors={$paletteStore} />
+      <img class="rounded-lg h-[82.5vh] m-8" src={$dataUrlStore} alt="" />
+    {/if}
   </div>
   <div class="flex items-center justify-center gap-4">
-    <input
-      bind:value={image}
-      class="bg-neutral-800 p-1 rounded ring-neutral-500 ring-2 text-sm"
-    />
-    <div class="flex flex-col">
-      <label for="palette-size" class="block mb-2 text-sm font-medium"
-        >Palette size: {groups}</label
-      >
-      <input
-        id="palette-size"
-        type="range"
-        min="3"
-        max="12"
-        step="1"
-        bind:value={groups}
-        class="appearance-none bg-neutral-800 rounded-lg h-2 cursor-pointer accent-blue-400"
-      />
-    </div>
-    <div class="flex flex-col">
-      <label for="tolerance-val" class="block mb-2 text-sm font-medium"
-        >Tolerance: {tolerance}</label
-      >
-      <input
-        id="tolerance-val"
-        type="range"
-        min="0.2"
-        max="1.0"
-        step="0.1"
-        bind:value={tolerance}
-        class="appearance-none bg-neutral-800 rounded-lg h-2 cursor-pointer accent-blue-400"
-      />
-    </div>
+    <PaletteSizeSlider />
+    <ToleranceSlider />
+    <FileUpload />
+    <button
+      on:click={generate}
+      class="p-1.5 bg-blue-400 rounded text-sm text-black">Generate</button
+    >
   </div>
 </main>
