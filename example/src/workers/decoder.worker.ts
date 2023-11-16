@@ -1,4 +1,4 @@
-self.onmessage = async (event: any) => {
+self.onmessage = async (event: MessageEvent) => {
   const res = await fetch(event.data)
   const blob = await res.blob()
 

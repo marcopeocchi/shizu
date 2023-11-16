@@ -6,7 +6,7 @@
 {#if $loadingStore}
   <Spinner />
 {:else}
-  <div class="rounded-lg shadow p-8 bg-neutral-900 ml-8">
+  <div class="rounded-lg shadow p-6 bg-neutral-900 ml-8">
     {#each $paletteStore as color, index}
       <div
         class={index === 0
