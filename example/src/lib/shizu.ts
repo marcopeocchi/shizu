@@ -1,34 +1,36 @@
 import { get } from 'svelte/store'
 import {
   groupsStore,
+  loadingStore,
   paletteStore,
   toleranceStore
 } from '../store'
 
-export const getPalette = async (src: string) => {
-  const img = new Image()
-  img.src = src
+type WorkerResponse = {
+  buffer: ArrayBufferLike,
+  height: number,
+  width: number,
+}
 
-  const canvas = new OffscreenCanvas(img.width, img.height)
-  const context = canvas.getContext('2d')
+const decoderWorker = new Worker('./src/workers/decoder.worker.ts')
 
-  context.drawImage(img, 0, 0)
-
-  const buffer = context
-    .getImageData(0, 0, img.width, img.height, { colorSpace: 'srgb' })
-    .data
-    .buffer
-
+decoderWorker.onmessage = (event: MessageEvent<WorkerResponse>) => {
   const palette = getDominantColors({
-    buffer: new Uint8Array(buffer),
-    height: img.height,
-    width: img.width,
+    buffer: new Uint8Array(event.data.buffer),
+    height: event.data.height,
+    width: event.data.width,
     paletteSize: get(groupsStore),
     tolerance: get(toleranceStore)
   })
     .split(",")
 
   paletteStore.set(palette)
+  loadingStore.set(false)
+}
+
+export const getPalette = async (src: string) => {
+  loadingStore.set(true)
+  decoderWorker.postMessage(src)
 }
 
 export const getDataUrlFromFile = async (file: File) =>
