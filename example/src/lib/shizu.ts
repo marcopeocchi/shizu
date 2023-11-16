@@ -6,13 +6,15 @@ import {
   toleranceStore
 } from '../store'
 
+import workerPath from '../workers/decoder.worker?url'
+
 type WorkerResponse = {
   buffer: ArrayBufferLike,
   height: number,
   width: number,
 }
 
-const decoderWorker = new Worker('./src/workers/decoder.worker.ts')
+const decoderWorker = new Worker(workerPath)
 
 decoderWorker.onmessage = (event: MessageEvent<WorkerResponse>) => {
   const palette = getDominantColors({
