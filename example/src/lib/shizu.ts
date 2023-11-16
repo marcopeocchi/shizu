@@ -1,9 +1,11 @@
 import { get } from 'svelte/store'
-import { groupsStore, loadingStore, paletteStore, toleranceStore } from '../store'
+import {
+  groupsStore,
+  paletteStore,
+  toleranceStore
+} from '../store'
 
 export const getPalette = async (src: string) => {
-  loadingStore.set(true)
-
   const img = new Image()
   img.src = src
 
@@ -26,7 +28,6 @@ export const getPalette = async (src: string) => {
   })
     .split(",")
 
-  loadingStore.set(false)
   paletteStore.set(palette)
 }
 

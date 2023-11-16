@@ -1,6 +1,6 @@
 import { writable } from 'svelte/store'
 
-export const paletteStore = writable<string[]>([])
+export const paletteStore = writable<string[]>(new Array(5).fill('#000000'))
 
 export const groupsStore = writable(5)
 

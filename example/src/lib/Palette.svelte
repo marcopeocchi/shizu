@@ -1,20 +1,25 @@
 <script lang="ts">
-  export let colors: string[];
+  import { loadingStore, paletteStore } from '../store';
+  import Spinner from './Spinner.svelte';
 </script>
 
-<div class="rounded-lg shadow p-8 bg-neutral-900">
-  {#each colors as color, index}
-    <div
-      class={index === 0
-        ? 'rounded-t-lg tile'
-        : index === colors.length - 1
-        ? 'rounded-b-lg tile'
-        : 'tile'}
-      style:height="{550 / colors.length}px"
-      style:background-color={color}
-    />
-  {/each}
-</div>
+{#if $loadingStore}
+  <Spinner />
+{:else}
+  <div class="rounded-lg shadow p-8 bg-neutral-900 ml-8">
+    {#each $paletteStore as color, index}
+      <div
+        class={index === 0
+          ? 'rounded-t-lg tile'
+          : index === $paletteStore.length - 1
+          ? 'rounded-b-lg tile'
+          : 'tile'}
+        style:height="calc(75.5vh / {$paletteStore.length}"
+        style:background-color={color}
+      />
+    {/each}
+  </div>
+{/if}
 
 <style scoped>
   .tile {
