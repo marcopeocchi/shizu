@@ -6,7 +6,7 @@ import {
   toleranceStore
 } from '../store'
 
-import workerPath from '../workers/decoder.worker?url'
+import DecoderWorker from '../workers/decoder?worker'
 
 type WorkerResponse = {
   buffer: ArrayBufferLike,
@@ -14,7 +14,7 @@ type WorkerResponse = {
   width: number,
 }
 
-const decoderWorker = new Worker(workerPath)
+const decoderWorker = new DecoderWorker()
 
 decoderWorker.onmessage = (event: MessageEvent<WorkerResponse>) => {
   const palette = getDominantColors({
@@ -24,7 +24,7 @@ decoderWorker.onmessage = (event: MessageEvent<WorkerResponse>) => {
     paletteSize: get(groupsStore),
     tolerance: get(toleranceStore)
   })
-    .split(",")
+    .split(',')
 
   paletteStore.set(palette)
   loadingStore.set(false)

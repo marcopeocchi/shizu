@@ -14,7 +14,7 @@
           : index === $paletteStore.length - 1
           ? 'rounded-b-lg tile'
           : 'tile'}
-        style:height="calc(75.5vh / {$paletteStore.length}"
+        style:height="calc(77vh / {$paletteStore.length}"
         style:background-color={color}
       />
     {/each}
