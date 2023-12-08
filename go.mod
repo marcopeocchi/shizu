@@ -7,3 +7,5 @@ require (
 	github.com/muesli/kmeans v0.3.1
 	golang.org/x/image v0.11.0
 )
+
+require github.com/lucasb-eyer/go-colorful v1.2.0

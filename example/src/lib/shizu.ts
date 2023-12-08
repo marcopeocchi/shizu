@@ -26,6 +26,8 @@ decoderWorker.onmessage = (event: MessageEvent<WorkerResponse>) => {
   })
     .split(',')
 
+  console.log(palette)
+
   paletteStore.set(palette)
   loadingStore.set(false)
 }

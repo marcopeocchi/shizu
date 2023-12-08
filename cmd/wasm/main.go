@@ -6,7 +6,7 @@ import (
 	"strings"
 	"syscall/js"
 
-	"github.com/marcopeocchi/shizu/pkg/kmeans"
+	"github.com/marcopeocchi/shizu/pkg/palette"
 )
 
 func wasmWrapper() js.Func {
@@ -32,7 +32,7 @@ func wasmWrapper() js.Func {
 		rgba := image.NewRGBA(image.Rect(0, 0, width, height))
 		rgba.Pix = canvas
 
-		colors, err := kmeans.GetDominantColorsHex(rgba, kgroups, tolerance)
+		colors, err := palette.Get(rgba, kgroups, tolerance)
 		if err != nil {
 			fmt.Println(err)
 		}

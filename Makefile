@@ -1,3 +1,3 @@
 wasm:
-	tinygo build -o shizu.wasm -target wasm cmd/wasm/main.go
+	tinygo build -o shizu.wasm -target wasm -opt=z cmd/wasm/main.go
 	
