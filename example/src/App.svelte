@@ -15,9 +15,7 @@
   });
 
   const generate = async () => {
-    loadingStore.set(true);
     await getPalette(get(dataUrlStore));
-    loadingStore.set(false);
   };
 
   onMount(() => {

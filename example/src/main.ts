@@ -10,7 +10,7 @@ WebAssembly.instantiateStreaming(fetch(wasmURL), go.importObject).then((m) => {
   go.run(m.instance)
 
   app = new App({
-    target: document.getElementById('app'),
+    target: document.getElementById('app')!,
   })
 })
 

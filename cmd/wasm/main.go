@@ -42,6 +42,6 @@ func wasmWrapper() js.Func {
 }
 
 func main() {
-	js.Global().Set("getDominantColors", wasmWrapper())
+	js.Global().Set("generatePalette", wasmWrapper())
 	<-make(chan struct{})
 }

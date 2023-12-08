@@ -9,15 +9,15 @@ import {
 import DecoderWorker from '../workers/decoder?worker'
 
 type WorkerResponse = {
-  buffer: ArrayBufferLike,
-  height: number,
-  width: number,
+  buffer: ArrayBufferLike
+  height: number
+  width: number
 }
 
 const decoderWorker = new DecoderWorker()
 
 decoderWorker.onmessage = (event: MessageEvent<WorkerResponse>) => {
-  const palette = getDominantColors({
+  const palette = generatePalette({
     buffer: new Uint8Array(event.data.buffer),
     height: event.data.height,
     width: event.data.width,
@@ -26,14 +26,12 @@ decoderWorker.onmessage = (event: MessageEvent<WorkerResponse>) => {
   })
     .split(',')
 
-  console.log(palette)
-
   paletteStore.set(palette)
-  loadingStore.set(false)
+  loadingStore.update(() => false)
 }
 
 export const getPalette = async (src: string) => {
-  loadingStore.set(true)
+  loadingStore.update(() => true)
   decoderWorker.postMessage(src)
 }
 

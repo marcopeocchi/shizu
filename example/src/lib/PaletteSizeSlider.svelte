@@ -3,9 +3,9 @@
 </script>
 
 <div class="flex flex-col">
-  <label for="palette-size" class="block mb-2 text-sm font-medium"
-    >Palette size: {$groupsStore}</label
-  >
+  <label for="palette-size" class="block mb-2 text-sm font-medium">
+    Palette size: {$groupsStore}
+  </label>
   <input
     id="palette-size"
     type="range"

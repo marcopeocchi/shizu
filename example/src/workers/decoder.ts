@@ -5,7 +5,7 @@ self.onmessage = async (event: MessageEvent) => {
   const img = await createImageBitmap(blob)
 
   const canvas = new OffscreenCanvas(img.width, img.height)
-  const context = canvas.getContext('2d')
+  const context = canvas.getContext('2d')!
 
   context.drawImage(img, 0, 0)
 

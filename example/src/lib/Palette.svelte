@@ -12,8 +12,8 @@
         class={index === 0
           ? 'rounded-t-lg tile'
           : index === $paletteStore.length - 1
-          ? 'rounded-b-lg tile'
-          : 'tile'}
+            ? 'rounded-b-lg tile'
+            : 'tile'}
         style:height="calc(77vh / {$paletteStore.length}"
         style:background-color={color}
       />
