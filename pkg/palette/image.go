@@ -3,11 +3,11 @@ package palette
 import (
 	"errors"
 	"image"
+	"math/rand"
 	"sort"
 
 	"github.com/lucasb-eyer/go-colorful"
-	"github.com/muesli/clusters"
-	"github.com/muesli/kmeans"
+	"github.com/marcopeocchi/shizu/pkg/kmeans"
 )
 
 func Get(rgba image.Image, kgroups int, tolerance float64) (*[]string, error) {
@@ -21,7 +21,7 @@ func Get(rgba image.Image, kgroups int, tolerance float64) (*[]string, error) {
 		iterationsY = int((boundY * (tolerance * 100)) / boundY)
 		iterationsX = int((boundX * (tolerance * 100)) / boundX)
 
-		obs clusters.Observations
+		obs kmeans.Observations
 	)
 
 	for y := rgba.Bounds().Min.Y; y < rgba.Bounds().Max.Y; y += iterationsY {
@@ -35,13 +35,13 @@ func Get(rgba image.Image, kgroups int, tolerance float64) (*[]string, error) {
 
 			l, a, b := c.Lab()
 
-			obs = append(obs, clusters.Coordinates{l, a, b})
+			obs = append(obs, kmeans.Coordinates{l, a, b})
 		}
 	}
 
 	var (
 		km             = kmeans.New()
-		kmClusters, _  = km.Partition(obs, kgroups)
+		kmClusters, _  = km.Partition(obs, kgroups, rand.Int63())
 		dominantColors = make([]string, kgroups)
 	)
 
